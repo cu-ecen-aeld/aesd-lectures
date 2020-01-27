@@ -39,14 +39,19 @@ int main(int argc, char **argv)
             int readlen = read(fd,buff,1);
             rc = 0;
             if( readlen == -1 ) {
-                printf("Error with read(), errno is %d (%s)\n",errno,strerror(errno));
-                rc = -1;
-            }
-            if( readlen != 0 ) {
-                printf("read %d bytes, first byte was %c\n",readlen,buff[0]);
-            }
-            else {
-                printf("Read 0 bytes (empty file)\n");
+                if( !block && errno == EAGAIN ) {
+                    printf("EAGAIN returned from read(), no data available to read\n");
+                } else {
+                    printf("Error returned from read(), errno is %d (%s)\n",errno,strerror(errno));
+                }
+                rc = -errno;
+            } else {
+                if( readlen != 0 ) {
+                    printf("Read %d bytes, first byte was %c\n",readlen,buff[0]);
+                }
+                else {
+                    printf("Read 0 bytes (empty file)\n");
+                }
             }
             close(fd);
         }
