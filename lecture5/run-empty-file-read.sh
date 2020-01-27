@@ -1,3 +1,3 @@
 #!/bin/sh
-gcc readfile.c -o readfile 
+make
 ./readfile emptyfile

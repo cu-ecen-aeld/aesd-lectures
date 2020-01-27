@@ -5,22 +5,37 @@
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
+#include <stdbool.h>
 
 int main(int argc, char **argv)
 {
     int rc=-1;
-    if( argc != 2 ) {
-        printf("Usage: %s filename\n",argv[0]);
+    if( argc < 2 ) {
+        printf("Usage: %s filename [nonblock]\n",argv[0]);
         printf("    The file specified as \"filename\" will be created with zero size if it does not exist.\n");
+        printf("    If nonblock is specified, the file will be opened in non-blocking mode.\n");
     } else {
         const char *filename = argv[1];
-        int fd=open(filename,
-                O_RDWR|O_CREAT,
-                S_IRWXU|S_IRWXG|S_IRWXO);
+        bool block = true;
+        if( argc >= 3 && strncmp(argv[2],"nonblock",8) == 0 ) {
+            printf("Using nonblocking mode as specified by argument\n");
+            block = false;
+        } 
         char buff[1];
+        printf("Opening %s in%sblocking mode\n",filename,block ? " " : " non");
+        int fd=open(filename,
+                O_RDONLY|
+                /**
+                * When opening in blocking mode, use O_CREAT|O_RDWR to support creating the file if it doesn't exist
+                * and to allow opening pipes on Linux when no readers are available (see http://man7.org/linux/man-pages/man7/fifo.7.html)
+                * blocking mode.
+                */
+                block ? O_CREAT|O_RDWR : O_NONBLOCK,
+                S_IRWXU|S_IRWXG|S_IRWXO);
         if( fd == -1 ) {
-            printf("Error opening %s\n",filename);
+            printf("Error %d (%s) opening %s\n",errno,strerror(errno),filename);
         } else {
+            printf("Reading 1 byte from %s\n",filename);
             int readlen = read(fd,buff,1);
             rc = 0;
             if( readlen == -1 ) {

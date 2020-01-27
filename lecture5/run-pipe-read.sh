@@ -1,5 +1,5 @@
 #!/bin/sh
-gcc readfile.c -o readfile
+make
 rm pipe
 mkfifo pipe
 echo "Attempting read on a pipe, will block"
