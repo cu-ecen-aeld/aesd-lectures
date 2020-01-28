@@ -1,4 +1,4 @@
-all:readfile sparsefile
+all:readfile sparsefile fork
 
 readfile:readfile.c
 	gcc -Wall -Werror readfile.c -o readfile
@@ -6,6 +6,9 @@ readfile:readfile.c
 sparsefile:sparsefile.c
 	gcc -Wall -Werror sparsefile.c -o sparsefile
 
+fork:fork.c
+	gcc -Wall -Werror fork.c -o fork 
+
 .PHONY: clean
 clean:
-	rm readfile
+	rm readfile sparsefile fork
