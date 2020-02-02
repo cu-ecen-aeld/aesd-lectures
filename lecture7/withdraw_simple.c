@@ -12,9 +12,9 @@ int main(int argc, char **argv)
     const int starting_balance=1000;
     const unsigned int withdraw_request=100;
     struct account useraccount;
-    memset(&useraccount,0,sizeof(struct account));
-    useraccount.current_balance = starting_balance; 
-    
+
+    withdraw_account_init(&useraccount,starting_balance);
+
     do_withdrawls(&useraccount,withdraw_request);
 
     if( useraccount.withdrawl_total > starting_balance ) {

@@ -20,5 +20,6 @@ struct account {
     unsigned int withdrawl_total; 
 };
 
+extern void withdraw_account_init(struct account *account, unsigned int starting_balance);
 extern void do_withdrawls(struct account *account, unsigned int withdraw_request);
 #endif
