@@ -1,7 +1,7 @@
 all:withdraw_simple
 
-withdraw_simple:withdraw_simple.c
-	gcc -Wall -Werror withdraw_simple.c -o withdraw_simple
+withdraw_simple:withdraw_simple.c withdraw_shared.c
+	gcc -Wall -Werror withdraw_simple.c withdraw_shared.c -o withdraw_simple
 
 .PHONY: clean
 clean:
