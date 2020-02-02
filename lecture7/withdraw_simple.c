@@ -13,7 +13,7 @@ int main(int argc, char **argv)
     const unsigned int withdraw_request=100;
     struct account useraccount;
 
-    withdraw_account_init(&useraccount,starting_balance);
+    withdraw_account_init(&useraccount,starting_balance,ACCOUNT_LOCKING_NONE);
 
     do_withdrawls(&useraccount,withdraw_request);
 

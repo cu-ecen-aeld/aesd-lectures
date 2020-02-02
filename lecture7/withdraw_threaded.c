@@ -5,9 +5,10 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
-#include "withdraw_shared.h"
 #include <stdlib.h>
 #include <pthread.h>
+#include "withdraw_shared.h"
+#include "withdraw_args.h"
 /**
 * A struture used to start threads for the withdrawl example
 */
@@ -47,7 +48,7 @@ static bool run_withdrawl_threads(struct account *account,
 {
     bool success = false;
     /**
-    * An array of pointer to dynamically allocated pthread structures
+    * An array of pointers to dynamically allocated pthread_t types
     */
     pthread_t **thread_array;
     thread_array=malloc(sizeof(pthread_t*)*num_threads);
@@ -94,25 +95,28 @@ static bool run_withdrawl_threads(struct account *account,
 
 int main(int argc, char **argv)
 {
-    const int starting_balance=1000;
-    const unsigned int withdraw_request=100;
-    const int num_threads=2;
-    struct account useraccount;
+    struct cmdargs args;
+    bool success = false;
 
-    withdraw_account_init(&useraccount,starting_balance);
- 
-    if ( run_withdrawl_threads(&useraccount,withdraw_request,num_threads) ) {
-        if ( useraccount.withdrawl_total > starting_balance ) {
-            printf("Withdrew a total of $%u from an account which only contained $%u!\n",
-                        useraccount.withdrawl_total,starting_balance);
-            return -1;
-        } else {
-            printf("Withdrew a total of $%u from account which contained $%u\n",
-                        useraccount.withdrawl_total,starting_balance);
-            return 0;
-        }
+    if ( !parseargs(&args,argc,argv) ) {
+        printusage(argv[0]);
     } else {
-        printf("Error starting withdrawl threads\n");
-        return -1;
+        struct account useraccount;
+       
+        withdraw_account_init(&useraccount,args.starting_balance,args.locking);
+     
+        if ( run_withdrawl_threads(&useraccount,args.withdraw_request,args.num_threads) ) {
+            if ( useraccount.withdrawl_total > args.starting_balance ) {
+                printf("Withdrew a total of $%u from an account which only contained $%u!\n",
+                            useraccount.withdrawl_total,args.starting_balance);
+            } else {
+                printf("Withdrew a total of $%u from account which contained $%u\n",
+                            useraccount.withdrawl_total,args.starting_balance);
+                success = true;
+            }
+        } else {
+            printf("Error starting withdrawl threads\n");
+        }
     }
+    return success ? 0 : -1;
 }
