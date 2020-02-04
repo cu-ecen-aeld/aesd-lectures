@@ -14,6 +14,7 @@
 enum withdraw_locking {
     ACCOUNT_LOCKING_NONE= 0,  // unsafe implementation for demonstration purposes
     ACCOUNT_LOCKING_MUTEX = 1, // use a lock and unlock mutex approach
+    ACCOUNT_LOCKING_SCOPED = 2, // use a scoped lock
 };
 
 /**
@@ -43,4 +44,5 @@ struct account {
 
 extern bool withdraw_account_init(struct account *account, unsigned int starting_balance, enum withdraw_locking locktype);
 extern void do_withdrawls(struct account *account, unsigned int withdraw_request);
+extern void disburse_money(unsigned int amount);
 #endif

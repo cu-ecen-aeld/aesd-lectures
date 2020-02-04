@@ -9,15 +9,16 @@
 #include <stdlib.h>
 #include "withdraw_args.h"
 
-#define STARTING_BALANCE_DEFAULT 10000
+#define STARTING_BALANCE_DEFAULT 1000
 #define WITHDRAW_REQUEST_DEFAULT 100
 #define NUM_THREADS_DEFAULT      5
 
 
 void printusage( const char *progname )
 {
-    printf("Usage : %s [ --safe ] [ --starting_balance BALANCE ] [ --withdraw_request AMOUNT ] [ --num_threads N ]\n",progname);
+    printf("Usage : %s [ --safe | --scoped ] [ --starting_balance BALANCE ] [ --withdraw_request AMOUNT ] [ --num_threads N ]\n",progname);
     printf("    --safe                          use locking on withdrawls for thread safe implementation\n");
+    printf("    --scoped                        use scoped locking on withdrawls for thread safe implementation\n");
     printf("    --starting_balance BALANCE      use BALANCE as starting account balance (default %u)\n",STARTING_BALANCE_DEFAULT);
     printf("    --withdraw_request AMOUNT       use AMOUNT for each withdraw request (default %u)\n",WITHDRAW_REQUEST_DEFAULT);
     printf("    --num_threads      N            use N threads (default %u)\n",NUM_THREADS_DEFAULT);
@@ -31,9 +32,11 @@ void printusage( const char *progname )
 bool parseargs( struct cmdargs *args, int argc, char **argv )
 {
     int safe_flag = 0;
+    int scoped_flag = 0;
     const struct option long_options[] =
     {
         {"safe",     no_argument,       &safe_flag, 1},
+        {"scoped",   no_argument,       &scoped_flag, 1},
         {"help",     no_argument,       0, 'h'},
         {"starting_balance", required_argument,       0, 's'},
         {"withdraw_request", required_argument,       0, 'w'},
@@ -85,6 +88,9 @@ bool parseargs( struct cmdargs *args, int argc, char **argv )
     } while ( success && rc != -1 );
     if ( success && safe_flag ) {
         args->locking = ACCOUNT_LOCKING_MUTEX;
+    }
+    if ( success && scoped_flag ) {
+        args->locking = ACCOUNT_LOCKING_SCOPED;
     }
     return success;
 }

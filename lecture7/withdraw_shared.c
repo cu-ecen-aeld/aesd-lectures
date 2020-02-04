@@ -8,10 +8,12 @@
 #include <unistd.h>
 #include <pthread.h>
 #include "withdraw_shared.h"
+#include "withdraw_scoped.h"
+
 /**
 * Simulate disbursing @param amount on our fictional ATM
 */
-static void disburse_money(unsigned int amount)
+void disburse_money(unsigned int amount)
 {
     printf("Disbursing $%u from thread %lu\n",amount,(unsigned long int)pthread_self());
 }
@@ -23,7 +25,7 @@ static bool withdraw_unsafe( struct account *account, unsigned int amount )
 {
     bool success = false;
     const int balance = account->current_balance;
-    if ( balance >= amount ) {
+    if ( balance >= (long) amount ) {
         success = true;
         printf("Withdrawl approved\n");
         account->current_balance = balance - amount;
@@ -44,7 +46,7 @@ static bool withdraw_mutex( struct account *account, unsigned int amount )
         printf("pthread_mutex_lock failed with %d\n",rc);
     } else {
         const int balance = account->current_balance;
-        if ( balance >= amount ) {
+        if ( balance >= (long) amount ) {
             success = true;
             printf("Withdrawl approved\n");
             account->current_balance = balance - amount;
@@ -78,6 +80,9 @@ static bool withdraw( struct account *account, unsigned int amount )
             break;
         case ACCOUNT_LOCKING_MUTEX:
             success = withdraw_mutex(account,amount);
+            break;
+        case ACCOUNT_LOCKING_SCOPED:
+            success = withdraw_scoped(account,amount);
             break;
         default:
             printf("Unhandled locking type %d in withdraw function\n",account->locktype);

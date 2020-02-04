@@ -51,7 +51,7 @@ static bool run_withdrawl_threads(struct account *account,
     * An array of pointers to dynamically allocated pthread_t types
     */
     pthread_t **thread_array;
-    thread_array=malloc(sizeof(pthread_t*)*num_threads);
+    thread_array=(pthread_t **)malloc(sizeof(pthread_t*)*num_threads);
     if ( thread_array == NULL ) {
         printf("Memory allocation for pthread pointer failed\n");
     } else { 
@@ -106,7 +106,7 @@ int main(int argc, char **argv)
         withdraw_account_init(&useraccount,args.starting_balance,args.locking);
      
         if ( run_withdrawl_threads(&useraccount,args.withdraw_request,args.num_threads) ) {
-            if ( useraccount.withdrawl_total > args.starting_balance ) {
+            if ( useraccount.withdrawl_total > (unsigned long) args.starting_balance ) {
                 printf("Withdrew a total of $%u from an account which only contained $%u!\n",
                             useraccount.withdrawl_total,args.starting_balance);
             } else {
