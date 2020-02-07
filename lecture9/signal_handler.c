@@ -8,6 +8,7 @@
 #include <stdbool.h>
 #include <errno.h>
 #include <string.h>
+#include <unistd.h> // pause
 
 bool caught_sigint = false;
 bool caught_sigterm = false;
@@ -38,9 +39,7 @@ int main ( int argc, char **argv )
 
     if( success ) {
         printf("Waiting forever for a signal\n");
-
-        // not the best way to wait... we'll get to that in a few slides
-        while( !caught_sigint && !caught_sigterm ) { }
+        pause();
         if( caught_sigint ) {
             printf("\nCaught SIGINT!\n");
         }
