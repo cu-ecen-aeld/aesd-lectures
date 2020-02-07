@@ -15,11 +15,19 @@ bool caught_sigterm = false;
 
 static void signal_handler ( int signal_number )
 {
+    /**
+    * Save a copy of errno so we can restore it later.  See https://pubs.opengroup.org/onlinepubs/9699919799/
+    * "Operations which obtain the value of errno and operations which assign a value to errno shall be
+    *  async-signal-safe, provided that the signal-catching function saves the value of errno upon entry and
+    *  restores it before it returns."
+    */
+    int errno_saved = errno;
     if ( signal_number == SIGINT ) {
         caught_sigint = true;
     } else if ( signal_number == SIGTERM ) {
         caught_sigterm = true;
     }
+    errno = errno_saved;
 }
 
 int main ( int argc, char **argv )
