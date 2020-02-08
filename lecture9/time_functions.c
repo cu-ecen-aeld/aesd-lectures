@@ -1,4 +1,5 @@
-/** * @author Dan Walkes
+/**
+* @author Dan Walkes
 * Time related example code
 */
 #include <time.h>
@@ -6,12 +7,6 @@
 #include <errno.h>
 #include <string.h>
 #include <stdbool.h>
-
-#define CLOCKLIST \
-        CLOCKLIST_ENTRY(CLOCK_REALTIME)\
-        CLOCKLIST_ENTRY(CLOCK_MONOTONIC)\
-        CLOCKLIST_ENTRY(CLOCK_PROCESS_CPUTIME_ID)\
-        CLOCKLIST_ENTRY(CLOCK_THREAD_CPUTIME_ID)
 
 /**
 * Print the clock time for the clock with id @param id and name
@@ -37,7 +32,7 @@ static void print_time_difference( const struct timespec *ts_start, const struct
                 clocktype,
                 ts_end->tv_sec-ts_start->tv_sec,
                 ts_end->tv_nsec > ts_start->tv_nsec ? ts_end->tv_nsec - ts_start->tv_nsec :
-                                                      1000000000-ts_start->tv_nsec + ts_end->tv_nsec);
+                                                      1000000000 - ts_start->tv_nsec + ts_end->tv_nsec);
 }
 
 int main ( int argc, char **argv )
@@ -81,6 +76,8 @@ int main ( int argc, char **argv )
             print_time_difference(&ts_monotonic_start,&ts_monotonic_end,"CLOCK_MONOTONIC");
             print_time_difference(&ts_process_cputime_start,&ts_process_cputime_end,"CLOCK_PROCESS_CPUTIME_ID");
             print_time_difference(&ts_thread_cputime_start,&ts_thread_cputime_end,"CLOCK_THREAD_CPUTIME_ID");
+        } else {
+            success = false;
         }
     }
 
