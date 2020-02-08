@@ -7,6 +7,7 @@
 #include <errno.h>
 #include <string.h>
 #include <stdbool.h>
+#include "time_functions_shared.h"
 
 /**
 * Print the clock time for the clock with id @param id and name
@@ -28,13 +29,13 @@ bool print_clock_time( clockid_t id, const char *clocktype, struct timespec *ts 
 
 static void print_time_difference( const struct timespec *ts_start, const struct timespec *ts_end, const char *clocktype)
 {
+    struct timespec ts_diff;
+    timespec_diff(&ts_diff,ts_start,ts_end); 
     printf("Clock %s difference between start and end times was %ld.%09ld seconds\n",
                 clocktype,
-                ts_end->tv_sec-ts_start->tv_sec,
-                ts_end->tv_nsec > ts_start->tv_nsec ? ts_end->tv_nsec - ts_start->tv_nsec :
-                                                      1000000000 - ts_start->tv_nsec + ts_end->tv_nsec);
+                ts_diff.tv_sec,
+                ts_diff.tv_nsec);
 }
-
 int main ( int argc, char **argv )
 {
     struct timespec ts_realtime_start;
