@@ -1,5 +1,7 @@
+*.swp
 segfaulter
 signal_handler
 time_functions
 sleep_functions
+timer_simple
 core
