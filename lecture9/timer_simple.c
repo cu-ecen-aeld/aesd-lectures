@@ -1,6 +1,6 @@
 /**
 * @author Dan Walkes
-* Signal handling example code
+* Simple timer example using SIGALRM
 */
 
 #include <signal.h>

@@ -5,3 +5,4 @@ time_functions
 sleep_functions
 timer_simple
 core
+timer_thread

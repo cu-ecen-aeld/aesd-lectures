@@ -1,4 +1,4 @@
-all:segfaulter signal_handler time_functions sleep_functions timer_simple
+all:segfaulter signal_handler time_functions sleep_functions timer_simple timer_thread
 
 CC=$(CROSS_COMPILE)gcc
 # use the -g flag to include debug info so our core file has line numbers
@@ -19,6 +19,10 @@ sleep_functions:sleep_functions.c sleep_args.h time_functions_shared.h sleep_arg
 timer_simple:timer_simple.c
 	$(CC) $(CCFLAGS) timer_simple.c -o timer_simple
 
+timer_thread:timer_thread.c time_functions_shared.h
+	$(CC) $(CCFLAGS) timer_thread.c -o timer_thread -lrt -pthread
+
+
 .PHONY: clean
 clean:
-	rm -f segfaulter signal_handler sleep_functions timer_simple
+	rm -f segfaulter signal_handler sleep_functions timer_simple timer_thread
