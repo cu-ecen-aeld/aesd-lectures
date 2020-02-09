@@ -31,8 +31,8 @@ static bool do_sleep(enum sleep_type sleep_type, float seconds_sleep, unsigned i
     */
     int rc = clock_gettime(clock_type,&ts_start);
     if( rc != 0 ) {
-        printf("Error %d (%s) getting CLOCK_MONOTONIC start time\n",
-            errno,strerror(errno));
+        printf("Error %d (%s) getting start time for clock type %d\n",
+            errno,strerror(errno),clock_type);
     } else {
         success = true;
         if( delay_time_ms > 0 ) {
@@ -89,10 +89,10 @@ static bool do_sleep(enum sleep_type sleep_type, float seconds_sleep, unsigned i
                 printf("Unhandled sleep type %d\n",sleep_type);
                 break;
         }
-        rc = clock_gettime(CLOCK_MONOTONIC,&ts_end);
+        rc = clock_gettime(clock_type,&ts_end);
         if (rc != 0) {
-            printf("Error %d (%s) getting CLOCK_MONOTONIC end time\n",
-                errno,strerror(errno));
+            printf("Error %d (%s) getting end time for clock type %d\n",
+                errno,strerror(errno),clock_type);
             success = false;
         }
         if (success) {
