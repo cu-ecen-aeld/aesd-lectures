@@ -35,7 +35,7 @@ static inline void seconds_to_timespec( struct timespec *result, float seconds)
 }
 
 /**
-* Set @param result with a timespec representing @param float seconds
+* @return a float representation in seconds of the timespect at @param ts
 */
 static inline float timespec_to_seconds( const struct timespec *ts )
 {
@@ -43,7 +43,7 @@ static inline float timespec_to_seconds( const struct timespec *ts )
 }
 
 /**
-* set @param result with ts_1 + ts_2
+* set @param result with @param ts_1 + @param ts_2
 */
 static inline void timespec_add( struct timespec *result,
                         const struct timespec *ts_1, const struct timespec *ts_2)
