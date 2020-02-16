@@ -11,7 +11,7 @@
 * Set @param result with the value of @param ts_start - @param ts_end, handling
 * rollover, assuming @param ts_end is after @param ts_start
 */
-static inline void timespec_diff( struct timespec *result,
+static inline void timespec_diff_before_after( struct timespec *result,
                         const struct timespec *ts_start, const struct timespec *ts_end)
 {
     result->tv_sec = ts_end->tv_sec - ts_start->tv_sec;
@@ -22,6 +22,8 @@ static inline void timespec_diff( struct timespec *result,
         result->tv_nsec = ts_end->tv_nsec - ts_start->tv_nsec;
     }
 }
+
+
 
 /**
 * Set @param result with a timespec representing @param float seconds
@@ -40,6 +42,21 @@ static inline void seconds_to_timespec( struct timespec *result, float seconds)
 static inline float timespec_to_seconds( const struct timespec *ts )
 {
     return ts->tv_sec + (((float)ts->tv_nsec) / 1000000000L);
+}
+
+
+/**
+* Set @param result with the absolute time difference between @param time1 and @param time2, handling
+* rollover.
+*/
+static inline void timespec_diff( struct timespec *result,
+                        const struct timespec *time1, const struct timespec *time2)
+{
+	if( timespec_to_seconds(time2) >= timespec_to_seconds(time1) ) {
+		timespec_diff_before_after(result,time1,time2);
+	} else {
+		timespec_diff_before_after(result,time2,time1);
+	}
 }
 
 /**
