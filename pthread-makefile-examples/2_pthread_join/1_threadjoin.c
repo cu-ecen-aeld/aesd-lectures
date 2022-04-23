@@ -37,7 +37,8 @@ int main(int argc, char *argv[])
 
 
     printf("Main Thread exiting now\n");
-    pthread_exit(NULL);
+    
+    return 0;
 }
 
 

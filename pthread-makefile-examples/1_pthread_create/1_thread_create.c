@@ -45,5 +45,5 @@ int main(int argc, char *argv[])
     sleep(5);
     printf("\nmain thread: exiting now\n");
 
-    exit(0);
+    return 0;
 }

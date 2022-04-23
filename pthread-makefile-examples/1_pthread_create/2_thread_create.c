@@ -31,6 +31,6 @@ int main(int argc, char *argv[])
     sleep(5);
     printf("\nmain thread: after sleep 5 sec\n");
 
-    // exit(0); //If exit is called from main thread, it kills all the created threads as it terminates the process
+    // exit(0); //If exit / return is called from main thread, it kills all the created threads as it terminates the process
     pthread_exit(0); //pthread_exit() is called from the main thread, this ensures that all the other threads in this process continue to execute until termination
 }

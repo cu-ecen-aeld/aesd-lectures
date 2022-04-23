@@ -39,7 +39,8 @@ int main(int argc, char *argv[])
     pthread_cancel(t1_id); //Used to terminate/cancel the thread t1
 
     printf("Main Thread exiting now\n");
-    pthread_exit(NULL);
+    
+    return 0;
 }
 
 

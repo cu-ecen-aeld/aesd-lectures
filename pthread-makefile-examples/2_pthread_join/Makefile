@@ -1,8 +1,9 @@
-# Makefile Tutorial 2: Macro, PHONY Targets 	
+# Makefile Tutorial 2: Macros, PHONY Targets 	
 
 #					Macros
 # The make program allows you to use macros, which are similar to variables. 
 # Macros are defined in a Makefile as = pairs. 
+# Reference: https://www.star.nesdis.noaa.gov/pub/corp/scsb/wchen.RMAFTER-20190830/makefile_tutorial/makefile_macros.htm
 # An example has been shown below −
 
 CC = gcc # compiler macro
