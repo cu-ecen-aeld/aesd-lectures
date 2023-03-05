@@ -55,6 +55,7 @@ static bool setup_timer( int clock_id,
         printf("Error %d (%s) getting clock %d time\n",errno,strerror(errno),clock_id);
     } else {
         struct itimerspec itimerspec;
+        memset(&itimerspec, 0, sizeof(struct itimerspec));
         itimerspec.it_interval.tv_sec = 0;
         itimerspec.it_interval.tv_nsec = timer_period_ms * 1000000;
         timespec_add(&itimerspec.it_value,start_time,&itimerspec.it_interval);
